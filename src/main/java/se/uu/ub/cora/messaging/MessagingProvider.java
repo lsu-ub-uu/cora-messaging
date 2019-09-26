@@ -23,7 +23,7 @@ import java.util.ServiceLoader;
 
 public class MessagingProvider {
 
-	public static MessagingFactory messagingFactory;
+	private static MessagingFactory messagingFactory;
 	private static MessagingModuleStarter starter = new MessagingModuleStarterImp();
 
 	private MessagingProvider() {
@@ -34,27 +34,43 @@ public class MessagingProvider {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void setMessagingFactory(MessagingFactory messagingFactory) {
-		MessagingProvider.messagingFactory = messagingFactory;
-
-	}
-
 	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
-		if (null == messagingFactory) {
-			Iterable<MessagingFactory> messagingFactoryImplementations = ServiceLoader
-					.load(MessagingFactory.class);
-			messagingFactory = starter
-					.startUsingMessagingFactoryImplementations(messagingFactoryImplementations);
-		}
+		ensureMessagingFactoryIsSet();
 		return messagingFactory.factorTopicSenderMessage(channelInfo);
 	}
 
-	public static void setStarter(MessagingModuleStarter starter) {
+	private static void ensureMessagingFactoryIsSet() {
+		if (null == messagingFactory) {
+			getMessagingFactoryImpUsingModuleStarter();
+		}
+	}
+
+	private static void getMessagingFactoryImpUsingModuleStarter() {
+		Iterable<MessagingFactory> messagingFactoryImplementations = ServiceLoader
+				.load(MessagingFactory.class);
+		messagingFactory = starter
+				.startUsingMessagingFactoryImplementations(messagingFactoryImplementations);
+	}
+
+	/**
+	 * Sets a MessagingFactory that will be used to factor message handlers. This possibility to set
+	 * a MessagingFactory is provided to enable testing of message handling in other classes and is
+	 * not intented to be used in production. The MessagingFactory to use should be provided through
+	 * an implementation of MessagingFactory in a seperate java module.
+	 * 
+	 * @param messagingFactory
+	 *            A MessagingFactory to use to create messag handlers for testing
+	 */
+	public static void setMessagingFactory(MessagingFactory messagingFactory) {
+		MessagingProvider.messagingFactory = messagingFactory;
+	}
+
+	static void setStarter(MessagingModuleStarter starter) {
 		MessagingProvider.starter = starter;
 
 	}
 
-	public static MessagingModuleStarter getStarter() {
+	static MessagingModuleStarter getStarter() {
 		return starter;
 	}
 }

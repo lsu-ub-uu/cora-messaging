@@ -19,6 +19,7 @@
 
 package se.uu.ub.cora.messaging;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Constructor;
@@ -47,10 +48,19 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testLoggerProviderUsesExistingLoggerFactory() throws Exception {
+	public void testSetMessagingFactoryForUsingInAnotherTest() throws Exception {
 		// MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
-		MessagingFactory messagingFactorySpy = new MessagingFactorySpy();
+		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
+
+		String hostname = "messaging.alvin-portal.org";
+		String port = "5672";
+		String channel = "alvin.updates.#";
+
+		ChannelInfo channelInfo = new ChannelInfo(hostname, port, channel);
+		MessageSender messageSender = MessagingProvider.getTopicMessageSender(channelInfo);
+
+		assertEquals(messagingFactorySpy.channelInfo, channelInfo);
 
 		// LoggerFactorySpy loggerFactorySpy = new LoggerFactorySpy();
 		// LoggerProvider.setLoggerFactory(loggerFactorySpy);

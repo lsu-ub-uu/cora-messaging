@@ -19,8 +19,6 @@
 
 package se.uu.ub.cora.messaging;
 
-public class MessagingFactorySpy implements MessagingFactory {
-
-	public ChannelInfo channelInfo;
+public interface MessageSender {
 
 }

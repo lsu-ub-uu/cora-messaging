@@ -19,8 +19,10 @@
 
 package se.uu.ub.cora.messaging;
 
-public class MessagingFactorySpy implements MessagingFactory {
+public class ChannelInfo {
 
-	public ChannelInfo channelInfo;
+	public ChannelInfo(String hostname, String port, String channel) {
+		// TODO Auto-generated constructor stub
+	}
 
 }

@@ -16,19 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.uu.ub.cora.messaging;
 
-public class ChannelInfo {
+import static org.testng.Assert.assertEquals;
 
-	public String hostname;
-	public String port;
-	public String channel;
+import org.testng.annotations.Test;
 
-	public ChannelInfo(String hostname, String port, String channel) {
-		this.hostname = hostname;
-		this.port = port;
-		this.channel = channel;
+public class ChannelInfoTest {
+
+	@Test
+	public void testCompleteChannelInfo() {
+		String hostname = "someHostName";
+		String port = "somePort";
+		String channel = "someChannel";
+		ChannelInfo channelInfo = new ChannelInfo(hostname, port, channel);
+		assertEquals(channelInfo.hostname, hostname);
+		assertEquals(channelInfo.port, port);
+		assertEquals(channelInfo.channel, channel);
 	}
 
 }

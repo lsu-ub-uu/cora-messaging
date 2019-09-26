@@ -19,24 +19,6 @@
 
 package se.uu.ub.cora.messaging;
 
-public class MessagingProvider {
+public class MessageSenderSpy implements MessageSender {
 
-	public static MessagingFactory messagingFactory;
-
-	private MessagingProvider() {
-		preventConstructorFromEverBeingCalledEvenByReflection();
-	}
-
-	private void preventConstructorFromEverBeingCalledEvenByReflection() {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void setMessagingFactory(MessagingFactory messagingFactory) {
-		MessagingProvider.messagingFactory = messagingFactory;
-
-	}
-
-	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
-		return messagingFactory.factorTopicSenderMessage(channelInfo);
-	}
 }

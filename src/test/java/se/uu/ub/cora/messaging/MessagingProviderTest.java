@@ -49,7 +49,7 @@ public class MessagingProviderTest {
 
 	@Test
 	public void testSetMessagingFactoryForUsingInAnotherTest() throws Exception {
-		// MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
+
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
@@ -61,13 +61,7 @@ public class MessagingProviderTest {
 		MessageSender messageSender = MessagingProvider.getTopicMessageSender(channelInfo);
 
 		assertEquals(messagingFactorySpy.channelInfo, channelInfo);
-
-		// LoggerFactorySpy loggerFactorySpy = new LoggerFactorySpy();
-		// LoggerProvider.setLoggerFactory(loggerFactorySpy);
-		// Logger log = LoggerProvider.getLoggerForClass(String.class);
-		//
-		// assertEquals(loggerFactorySpy.classNames.get(0), String.class.getName());
-		// assertEquals(log, loggerFactorySpy.factored);
+		assertEquals(messageSender, messagingFactorySpy.messageSender);
 	}
 
 }

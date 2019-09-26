@@ -22,5 +22,15 @@ package se.uu.ub.cora.messaging;
 public class MessagingFactorySpy implements MessagingFactory {
 
 	public ChannelInfo channelInfo;
+	public MessageSender messageSender;
+
+	@Override
+	public MessageSender factorTopicSenderMessage(ChannelInfo channelInfo) {
+
+		this.channelInfo = channelInfo;
+		this.messageSender = new MessageSenderSpy();
+
+		return messageSender;
+	}
 
 }

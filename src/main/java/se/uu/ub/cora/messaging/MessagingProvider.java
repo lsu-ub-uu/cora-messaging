@@ -19,9 +19,12 @@
 
 package se.uu.ub.cora.messaging;
 
+import java.util.ServiceLoader;
+
 public class MessagingProvider {
 
 	public static MessagingFactory messagingFactory;
+	private static MessagingModuleStarter starter = new MessagingModuleStarterImp();
 
 	private MessagingProvider() {
 		preventConstructorFromEverBeingCalledEvenByReflection();
@@ -37,6 +40,21 @@ public class MessagingProvider {
 	}
 
 	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
+		if (null == messagingFactory) {
+			Iterable<MessagingFactory> messagingFactoryImplementations = ServiceLoader
+					.load(MessagingFactory.class);
+			messagingFactory = starter
+					.startUsingMessagingFactoryImplementations(messagingFactoryImplementations);
+		}
 		return messagingFactory.factorTopicSenderMessage(channelInfo);
+	}
+
+	public static void setStarter(MessagingModuleStarter starter) {
+		MessagingProvider.starter = starter;
+
+	}
+
+	public static MessagingModuleStarter getStarter() {
+		return starter;
 	}
 }

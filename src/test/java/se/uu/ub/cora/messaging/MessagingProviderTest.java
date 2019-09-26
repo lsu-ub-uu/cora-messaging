@@ -25,10 +25,16 @@ import static org.testng.Assert.assertTrue;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.ServiceLoader;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class MessagingProviderTest {
+	@BeforeMethod
+	public void beforeMethod() {
+		MessagingProvider.setMessagingFactory(null);
+	}
 
 	@Test
 	public void testPrivateConstructor() throws Exception {
@@ -64,4 +70,56 @@ public class MessagingProviderTest {
 		assertEquals(messageSender, messagingFactorySpy.messageSender);
 	}
 
+	@Test
+	public void testNonExceptionThrowingStartup() throws Exception {
+		MessagingModuleStarterSpy starter = startMessagingModuleInitializerWithStarterSpy();
+
+		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
+				"alvin.updates.#");
+		MessagingProvider.getTopicMessageSender(channelInfo);
+		assertTrue(starter.startWasCalled);
+	}
+
+	private MessagingModuleStarterSpy startMessagingModuleInitializerWithStarterSpy() {
+		MessagingModuleStarter starter = new MessagingModuleStarterSpy();
+		MessagingProvider.setStarter(starter);
+		return (MessagingModuleStarterSpy) starter;
+	}
+
+	@Test
+	public void testInitUsesDefaultMessagingModuleStarter() throws Exception {
+		MessagingModuleStarter starter = MessagingProvider.getStarter();
+		assertStarterIsMessagingModuleStarter(starter);
+		makeSureErrorIsThrownAsNoImplementationsExistInThisModule();
+	}
+
+	private void assertStarterIsMessagingModuleStarter(MessagingModuleStarter starter) {
+		assertTrue(starter instanceof MessagingModuleStarterImp);
+	}
+
+	private void makeSureErrorIsThrownAsNoImplementationsExistInThisModule() {
+		Exception caughtException = null;
+		try {
+			ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
+					"alvin.updates.#");
+			MessagingProvider.getTopicMessageSender(channelInfo);
+		} catch (Exception e) {
+			caughtException = e;
+		}
+		assertTrue(caughtException instanceof MessagingInitializationException);
+		assertEquals(caughtException.getMessage(), "No implementations found for MessagingFactory");
+	}
+
+	@Test
+	public void testMessagingFactoryImplementationsArePassedOnToStarter() throws Exception {
+
+		MessagingModuleStarterSpy starter = startMessagingModuleInitializerWithStarterSpy();
+		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
+				"alvin.updates.#");
+		MessagingProvider.getTopicMessageSender(channelInfo);
+
+		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
+		assertTrue(iterable instanceof ServiceLoader);
+
+	}
 }

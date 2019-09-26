@@ -21,4 +21,10 @@ package se.uu.ub.cora.messaging;
 
 public class MessageSenderSpy implements MessageSender {
 
+	@Override
+	public void sendMessage() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

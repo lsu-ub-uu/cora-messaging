@@ -20,7 +20,5 @@
 package se.uu.ub.cora.messaging;
 
 public interface MessageSender {
-
 	void sendMessage();
-
 }

@@ -21,19 +21,34 @@ package se.uu.ub.cora.messaging;
 
 import java.util.ServiceLoader;
 
+import se.uu.ub.cora.logger.Logger;
+import se.uu.ub.cora.logger.LoggerProvider;
+
+/**
+ * MessagingProvider provides access to implementing classes that can send and recieve messages. The
+ * implementing classes are intended to be provided by other java modules.
+ */
 public class MessagingProvider {
 
 	private static MessagingFactory messagingFactory;
 	private static MessagingModuleStarter starter = new MessagingModuleStarterImp();
+	private static Logger log = LoggerProvider.getLoggerForClass(MessagingProvider.class);
 
 	private MessagingProvider() {
-		preventConstructorFromEverBeingCalledEvenByReflection();
-	}
-
-	private void preventConstructorFromEverBeingCalledEvenByReflection() {
+		// prevent constructor from ever being called even by reflection
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Returns a MessageSender for the topic described in the entered channelInfo using an
+	 * implementation of MessagingFactory, that will be loaded through javas ServiceLoader load
+	 * method.
+	 * 
+	 * @param channelInfo
+	 *            A ChannelInfo that should contain information about how to reach the channel to
+	 *            send messages to
+	 * @return A MessageSender for the topic described in channelInfo
+	 */
 	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
 		ensureMessagingFactoryIsSet();
 		return messagingFactory.factorTopicSenderMessage(channelInfo);
@@ -41,7 +56,9 @@ public class MessagingProvider {
 
 	private static void ensureMessagingFactoryIsSet() {
 		if (null == messagingFactory) {
+			log.logInfoUsingMessage("MessagingProvider starting...");
 			getMessagingFactoryImpUsingModuleStarter();
+			log.logInfoUsingMessage("MessagingProvider started");
 		}
 	}
 
@@ -67,7 +84,6 @@ public class MessagingProvider {
 
 	static void setStarter(MessagingModuleStarter starter) {
 		MessagingProvider.starter = starter;
-
 	}
 
 	static MessagingModuleStarter getStarter() {

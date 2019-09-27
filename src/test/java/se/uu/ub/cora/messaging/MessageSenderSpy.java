@@ -19,10 +19,12 @@
 
 package se.uu.ub.cora.messaging;
 
+import java.util.Map;
+
 public class MessageSenderSpy implements MessageSender {
 
 	@Override
-	public void sendMessage() {
+	public void sendMessage(Map<String, String> headers, String message) {
 		// TODO Auto-generated method stub
 
 	}

@@ -19,6 +19,8 @@
 
 package se.uu.ub.cora.messaging;
 
+import java.util.Map;
+
 public interface MessageSender {
-	void sendMessage();
+	void sendMessage(Map<String, String> headers, String message);
 }

@@ -38,7 +38,8 @@ public class MessagingStarterTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		loggerFactorySpy = new LoggerFactorySpy();
+		loggerFactorySpy = LoggerFactorySpy.getInstance();
+		loggerFactorySpy.resetLogs(testedClassName);
 		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		messagingFactoryImplementations = new ArrayList<>();
 		starter = new MessagingModuleStarterImp();

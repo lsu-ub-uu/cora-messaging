@@ -27,6 +27,17 @@ import se.uu.ub.cora.logger.Logger;
 import se.uu.ub.cora.logger.LoggerFactory;
 
 public class LoggerFactorySpy implements LoggerFactory {
+	private static LoggerFactorySpy instance;
+
+	private LoggerFactorySpy() {
+	}
+
+	public static LoggerFactorySpy getInstance() {
+		if (null == instance) {
+			instance = new LoggerFactorySpy();
+		}
+		return instance;
+	}
 
 	public Map<String, LoggerSpy> createdLoggers = new HashMap<>();
 

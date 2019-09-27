@@ -29,7 +29,6 @@ import java.lang.reflect.Modifier;
 import java.util.ServiceLoader;
 
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.uu.ub.cora.logger.LoggerProvider;
@@ -39,15 +38,11 @@ public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;
 	private String testedClassName = "MessagingProvider";
 
-	@BeforeTest
-	public void beforeTest() {
-		loggerFactorySpy = new LoggerFactorySpy();
-		LoggerProvider.setLoggerFactory(loggerFactorySpy);
-	}
-
 	@BeforeMethod
 	public void beforeMethod() {
+		loggerFactorySpy = LoggerFactorySpy.getInstance();
 		loggerFactorySpy.resetLogs(testedClassName);
+		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		MessagingProvider.setMessagingFactory(null);
 	}
 

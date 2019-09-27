@@ -19,12 +19,52 @@
 
 package se.uu.ub.cora.messaging;
 
-public class MessagingModuleStarterImp implements MessagingModuleStarter {
+import se.uu.ub.cora.logger.Logger;
+import se.uu.ub.cora.logger.LoggerProvider;
+
+class MessagingModuleStarterImp implements MessagingModuleStarter {
+	private Logger loggerForClass = LoggerProvider
+			.getLoggerForClass(MessagingModuleStarterImp.class);
+	private MessagingFactory foundMessagingFactory = null;
+	private int numberOfImplementations = 0;
 
 	@Override
 	public MessagingFactory startUsingMessagingFactoryImplementations(
 			Iterable<MessagingFactory> messagingFactoryImplementations) {
-		throw new MessagingInitializationException("No implementations found for MessagingFactory");
+		chooseAndCountFactories(messagingFactoryImplementations);
+		throwErrorIfNotOne();
+		return foundMessagingFactory;
+	}
+
+	private void throwErrorIfNotOne() {
+		logAndThrowErrorIfNone();
+		logAndThrowErrorIfMoreThanOne();
+	}
+
+	private void chooseAndCountFactories(
+			Iterable<MessagingFactory> messagingFactoryImplementations) {
+		for (MessagingFactory messagingFactory : messagingFactoryImplementations) {
+			numberOfImplementations++;
+			foundMessagingFactory = messagingFactory;
+			loggerForClass.logInfoUsingMessage(foundMessagingFactory.getClass().getSimpleName()
+					+ " found as implemetation for MessagingFactory");
+		}
+	}
+
+	private void logAndThrowErrorIfNone() {
+		if (numberOfImplementations == 0) {
+			String errorMessage = "No implementations found for MessagingFactory";
+			loggerForClass.logFatalUsingMessage(errorMessage);
+			throw new MessagingInitializationException(errorMessage);
+		}
+	}
+
+	private void logAndThrowErrorIfMoreThanOne() {
+		if (numberOfImplementations > 1) {
+			String errorMessage = "More than one implementations found for MessagingFactory";
+			loggerForClass.logFatalUsingMessage(errorMessage);
+			throw new MessagingInitializationException(errorMessage);
+		}
 	}
 
 }

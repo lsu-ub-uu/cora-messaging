@@ -26,13 +26,16 @@ public class ChannelInfoTest {
 
 	@Test
 	public void testCompleteChannelInfo() {
-		String hostname = "someHostName";
-		String port = "somePort";
-		String channel = "someChannel";
-		ChannelInfo channelInfo = new ChannelInfo(hostname, port, channel);
+		String hostname = "messaging.alvin-portal.org";
+		String port = "5672";
+		String virtualHost = "alvin";
+		String channel = "alvin.updates.#";
+		ChannelInfo channelInfo = new ChannelInfo(hostname, port, virtualHost, channel);
 		assertEquals(channelInfo.hostname, hostname);
 		assertEquals(channelInfo.port, port);
+		assertEquals(channelInfo.virtualHost, virtualHost);
 		assertEquals(channelInfo.channel, channel);
+
 	}
 
 }

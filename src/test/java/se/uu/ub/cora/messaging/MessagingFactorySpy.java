@@ -25,7 +25,7 @@ public class MessagingFactorySpy implements MessagingFactory {
 	public MessageSender messageSender;
 
 	@Override
-	public MessageSender factorTopicSenderMessage(ChannelInfo channelInfo) {
+	public MessageSender factorTopicMessageSender(ChannelInfo channelInfo) {
 
 		this.channelInfo = channelInfo;
 		this.messageSender = new MessageSenderSpy();

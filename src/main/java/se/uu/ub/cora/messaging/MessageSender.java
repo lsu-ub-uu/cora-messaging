@@ -22,5 +22,5 @@ package se.uu.ub.cora.messaging;
 import java.util.Map;
 
 public interface MessageSender {
-	void sendMessage(Map<String, String> headers, String message);
+	void sendMessage(Map<String, Object> headers, String message);
 }

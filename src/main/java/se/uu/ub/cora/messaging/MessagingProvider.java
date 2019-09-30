@@ -51,7 +51,7 @@ public class MessagingProvider {
 	 */
 	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
 		ensureMessagingFactoryIsSet();
-		return messagingFactory.factorTopicSenderMessage(channelInfo);
+		return messagingFactory.factorTopicMessageSender(channelInfo);
 	}
 
 	private static void ensureMessagingFactoryIsSet() {

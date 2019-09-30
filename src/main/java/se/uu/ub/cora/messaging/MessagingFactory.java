@@ -21,6 +21,6 @@ package se.uu.ub.cora.messaging;
 
 public interface MessagingFactory {
 
-	MessageSender factorTopicSenderMessage(ChannelInfo channelInfo);
+	MessageSender factorTopicMessageSender(ChannelInfo channelInfo);
 
 }

@@ -23,11 +23,13 @@ public class ChannelInfo {
 
 	public String hostname;
 	public String port;
+	public String virtualHost;
 	public String channel;
 
-	public ChannelInfo(String hostname, String port, String channel) {
+	public ChannelInfo(String hostname, String port, String virtualHost, String channel) {
 		this.hostname = hostname;
 		this.port = port;
+		this.virtualHost = virtualHost;
 		this.channel = channel;
 	}
 

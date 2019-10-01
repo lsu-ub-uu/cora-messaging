@@ -22,10 +22,10 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
-public class ChannelInfoTest {
+public class MessageRoutingInfoTest {
 
 	@Test
-	public void testCompleteChannelInfo() {
+	public void testCompleteMessageRoutingInfo() {
 		String hostname = "messaging.alvin-portal.org";
 		String port = "5672";
 		String virtualHost = "alvin";

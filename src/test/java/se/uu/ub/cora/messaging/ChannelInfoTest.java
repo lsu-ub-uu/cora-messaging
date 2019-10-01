@@ -29,12 +29,15 @@ public class ChannelInfoTest {
 		String hostname = "messaging.alvin-portal.org";
 		String port = "5672";
 		String virtualHost = "alvin";
-		String channel = "alvin.updates.#";
-		ChannelInfo channelInfo = new ChannelInfo(hostname, port, virtualHost, channel);
-		assertEquals(channelInfo.hostname, hostname);
-		assertEquals(channelInfo.port, port);
-		assertEquals(channelInfo.virtualHost, virtualHost);
-		assertEquals(channelInfo.channel, channel);
+		String exchange = "index";
+		String routingKey = "alvin.updates.#";
+		MessageRoutingInfo routingInfo = new MessageRoutingInfo(hostname, port, virtualHost, exchange,
+				routingKey);
+		assertEquals(routingInfo.hostname, hostname);
+		assertEquals(routingInfo.port, port);
+		assertEquals(routingInfo.virtualHost, virtualHost);
+		assertEquals(routingInfo.exchange, exchange);
+		assertEquals(routingInfo.routingKey, routingKey);
 
 	}
 

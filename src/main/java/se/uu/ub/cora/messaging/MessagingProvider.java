@@ -49,7 +49,7 @@ public class MessagingProvider {
 	 *            send messages to
 	 * @return A MessageSender for the topic described in channelInfo
 	 */
-	public static MessageSender getTopicMessageSender(ChannelInfo channelInfo) {
+	public static MessageSender getTopicMessageSender(MessageRoutingInfo channelInfo) {
 		ensureMessagingFactoryIsSet();
 		return messagingFactory.factorTopicMessageSender(channelInfo);
 	}

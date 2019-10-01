@@ -21,13 +21,13 @@ package se.uu.ub.cora.messaging;
 
 public class MessagingFactorySpy implements MessagingFactory {
 
-	public ChannelInfo channelInfo;
+	public MessageRoutingInfo routingInfo;
 	public MessageSender messageSender;
 
 	@Override
-	public MessageSender factorTopicMessageSender(ChannelInfo channelInfo) {
+	public MessageSender factorTopicMessageSender(MessageRoutingInfo routingInfo) {
 
-		this.channelInfo = channelInfo;
+		this.routingInfo = routingInfo;
 		this.messageSender = new MessageSenderSpy();
 
 		return messageSender;

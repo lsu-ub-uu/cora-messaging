@@ -37,6 +37,7 @@ import se.uu.ub.cora.messaging.log.LoggerFactorySpy;
 public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;
 	private String testedClassName = "MessagingProvider";
+	private MessageRoutingInfo routingInfo;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -44,6 +45,8 @@ public class MessagingProviderTest {
 		loggerFactorySpy.resetLogs(testedClassName);
 		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		MessagingProvider.setMessagingFactory(null);
+		routingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672", "alvin", "index",
+				"alvin.updates.#");
 	}
 
 	@Test
@@ -68,11 +71,9 @@ public class MessagingProviderTest {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
-		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
-				"alvin.updates.#");
-		MessageSender messageSender = MessagingProvider.getTopicMessageSender(channelInfo);
+		MessageSender messageSender = MessagingProvider.getTopicMessageSender(routingInfo);
 
-		assertEquals(messagingFactorySpy.channelInfo, channelInfo);
+		assertEquals(messagingFactorySpy.routingInfo, routingInfo);
 		assertEquals(messageSender, messagingFactorySpy.messageSender);
 	}
 
@@ -86,9 +87,7 @@ public class MessagingProviderTest {
 	public void testNonExceptionThrowingStartup() throws Exception {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
-				"alvin.updates.#");
-		MessagingProvider.getTopicMessageSender(channelInfo);
+		MessagingProvider.getTopicMessageSender(routingInfo);
 		assertTrue(starter.startWasCalled);
 	}
 
@@ -102,9 +101,7 @@ public class MessagingProviderTest {
 	public void testLoggingRecordStorageStartedByOtherProvider() {
 		startAndSetMessagingModuleStarterSpy();
 
-		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
-				"alvin.updates.#");
-		MessagingProvider.getTopicMessageSender(channelInfo);
+		MessagingProvider.getTopicMessageSender(routingInfo);
 
 		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 0),
 				"MessagingProvider starting...");
@@ -126,9 +123,8 @@ public class MessagingProviderTest {
 	private void makeSureErrorIsThrownAsNoImplementationsExistInThisModule() {
 		Exception caughtException = null;
 		try {
-			ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
-					"alvin.updates.#");
-			MessagingProvider.getTopicMessageSender(channelInfo);
+
+			MessagingProvider.getTopicMessageSender(routingInfo);
 		} catch (Exception e) {
 			caughtException = e;
 		}
@@ -140,9 +136,8 @@ public class MessagingProviderTest {
 	public void testMessagingFactoryImplementationsArePassedOnToStarter() throws Exception {
 
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
-		ChannelInfo channelInfo = new ChannelInfo("messaging.alvin-portal.org", "5672",
-				"alvin.updates.#");
-		MessagingProvider.getTopicMessageSender(channelInfo);
+
+		MessagingProvider.getTopicMessageSender(routingInfo);
 
 		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
 		assertTrue(iterable instanceof ServiceLoader);

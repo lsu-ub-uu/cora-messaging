@@ -24,7 +24,7 @@ import java.util.Map;
 public class MessageSenderSpy implements MessageSender {
 
 	@Override
-	public void sendMessage(Map<String, String> headers, String message) {
+	public void sendMessage(Map<String, Object> headers, String message) {
 		// TODO Auto-generated method stub
 
 	}

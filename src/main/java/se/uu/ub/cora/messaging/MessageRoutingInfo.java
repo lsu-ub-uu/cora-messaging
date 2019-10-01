@@ -19,18 +19,21 @@
 
 package se.uu.ub.cora.messaging;
 
-public class ChannelInfo {
+public class MessageRoutingInfo {
 
 	public String hostname;
 	public String port;
 	public String virtualHost;
-	public String channel;
+	public String routingKey;
+	public String exchange;
 
-	public ChannelInfo(String hostname, String port, String virtualHost, String channel) {
+	public MessageRoutingInfo(String hostname, String port, String virtualHost, String exchange,
+			String routingKey) {
 		this.hostname = hostname;
 		this.port = port;
 		this.virtualHost = virtualHost;
-		this.channel = channel;
+		this.exchange = exchange;
+		this.routingKey = routingKey;
 	}
 
 }

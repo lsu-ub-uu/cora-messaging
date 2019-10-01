@@ -19,6 +19,11 @@
 
 package se.uu.ub.cora.messaging;
 
+/**
+ * Container with information of where to route messages.
+ *
+ */
+
 public class MessageRoutingInfo {
 
 	public String hostname;

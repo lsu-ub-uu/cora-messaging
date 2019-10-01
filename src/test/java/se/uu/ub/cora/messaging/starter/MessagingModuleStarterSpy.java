@@ -16,11 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.uu.ub.cora.messaging;
+package se.uu.ub.cora.messaging.starter;
 
-public interface MessagingModuleStarter {
+import se.uu.ub.cora.messaging.MessagingFactory;
+import se.uu.ub.cora.messaging.MessagingFactorySpy;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
 
-	MessagingFactory startUsingMessagingFactoryImplementations(
-			Iterable<MessagingFactory> messagingFactoryImplementations);
+public class MessagingModuleStarterSpy implements MessagingModuleStarter {
+
+	public boolean startWasCalled = false;
+	public Iterable<MessagingFactory> messagingFactoryImplementations;
+
+	@Override
+	public MessagingFactory startUsingMessagingFactoryImplementations(
+			Iterable<MessagingFactory> messagingFactoryImplementations) {
+		this.messagingFactoryImplementations = messagingFactoryImplementations;
+		startWasCalled = true;
+		return new MessagingFactorySpy();
+	}
 
 }

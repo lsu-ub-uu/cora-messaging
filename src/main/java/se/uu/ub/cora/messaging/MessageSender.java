@@ -21,6 +21,19 @@ package se.uu.ub.cora.messaging;
 
 import java.util.Map;
 
+/**
+ * MessageSender is used to send messages to a messaging system such as AMQP or JMS. Implementations
+ * are normally created through a factory in an implementing package.
+ */
 public interface MessageSender {
+	/**
+	 * sendMessage sends a message to a messaging server, the server details, such as hostname, port
+	 * etc. are specified when creating an instance of the implementing class.
+	 * 
+	 * @param headers
+	 *            A Map<String, Object> that are sent as headers in the message
+	 * @param message
+	 *            A String with the body of the message
+	 */
 	void sendMessage(Map<String, Object> headers, String message);
 }

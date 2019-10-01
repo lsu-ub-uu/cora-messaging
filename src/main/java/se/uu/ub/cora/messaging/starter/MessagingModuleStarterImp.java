@@ -17,12 +17,14 @@
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.uu.ub.cora.messaging;
+package se.uu.ub.cora.messaging.starter;
 
 import se.uu.ub.cora.logger.Logger;
 import se.uu.ub.cora.logger.LoggerProvider;
+import se.uu.ub.cora.messaging.MessagingFactory;
+import se.uu.ub.cora.messaging.MessagingInitializationException;
 
-class MessagingModuleStarterImp implements MessagingModuleStarter {
+public class MessagingModuleStarterImp implements MessagingModuleStarter {
 	private Logger loggerForClass = LoggerProvider
 			.getLoggerForClass(MessagingModuleStarterImp.class);
 	private MessagingFactory foundMessagingFactory = null;

@@ -33,6 +33,9 @@ import org.testng.annotations.Test;
 
 import se.uu.ub.cora.logger.LoggerProvider;
 import se.uu.ub.cora.messaging.log.LoggerFactorySpy;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarterImp;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarterSpy;
 
 public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;

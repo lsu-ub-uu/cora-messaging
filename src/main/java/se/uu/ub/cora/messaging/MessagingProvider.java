@@ -23,6 +23,8 @@ import java.util.ServiceLoader;
 
 import se.uu.ub.cora.logger.Logger;
 import se.uu.ub.cora.logger.LoggerProvider;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
+import se.uu.ub.cora.messaging.starter.MessagingModuleStarterImp;
 
 /**
  * MessagingProvider provides access to implementing classes that can send and recieve messages. The
@@ -40,18 +42,18 @@ public class MessagingProvider {
 	}
 
 	/**
-	 * Returns a MessageSender for the topic described in the entered channelInfo using an
+	 * Returns a MessageSender for the topic described in the entered messagingRoutingInfo using an
 	 * implementation of MessagingFactory, that will be loaded through javas ServiceLoader load
 	 * method.
 	 * 
-	 * @param channelInfo
-	 *            A ChannelInfo that should contain information about how to reach the channel to
-	 *            send messages to
-	 * @return A MessageSender for the topic described in channelInfo
+	 * @param messagingRoutingInfo
+	 *            A messagingRoutingInfo that should contain information about how to reach the
+	 *            channel to send messages to
+	 * @return A MessageSender for the topic described in messagingRoutingInfo
 	 */
-	public static MessageSender getTopicMessageSender(MessageRoutingInfo channelInfo) {
+	public static MessageSender getTopicMessageSender(MessageRoutingInfo messagingRoutingInfo) {
 		ensureMessagingFactoryIsSet();
-		return messagingFactory.factorTopicMessageSender(channelInfo);
+		return messagingFactory.factorTopicMessageSender(messagingRoutingInfo);
 	}
 
 	private static void ensureMessagingFactoryIsSet() {

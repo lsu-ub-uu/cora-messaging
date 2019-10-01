@@ -19,8 +19,21 @@
 
 package se.uu.ub.cora.messaging;
 
+/**
+ * MessagingFactory is an interface to provide access to implementing factory classes found in other
+ * modules. These implementing classes are intended to be loaded through javas ServiceLoader
+ * mechanism
+ */
 public interface MessagingFactory {
-
+	/**
+	 * factorTopicMessageSender returns a {@link MessageSender} set up in such a way that
+	 * sendMessage can be called on the returned MessageSender resulting in the message beeing sent
+	 * to the host, port, etc specified in {@link MessageRoutingInfo}.
+	 * 
+	 * @param routingInfo
+	 *            {@link MessageRoutingInfo}
+	 * @return {@link MessageSender}
+	 */
 	MessageSender factorTopicMessageSender(MessageRoutingInfo routingInfo);
 
 }

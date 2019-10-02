@@ -29,6 +29,7 @@ import java.lang.reflect.Modifier;
 import java.util.ServiceLoader;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.uu.ub.cora.logger.LoggerProvider;
@@ -41,6 +42,15 @@ public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;
 	private String testedClassName = "MessagingProvider";
 	private MessageRoutingInfo routingInfo;
+	private MessagingModuleStarter defaultStarter;
+
+	@BeforeTest
+	public void beforeTest() {
+		loggerFactorySpy = LoggerFactorySpy.getInstance();
+		loggerFactorySpy.resetLogs(testedClassName);
+		LoggerProvider.setLoggerFactory(loggerFactorySpy);
+		defaultStarter = MessagingProvider.getStarter();
+	}
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -114,8 +124,8 @@ public class MessagingProviderTest {
 
 	@Test
 	public void testInitUsesDefaultMessagingModuleStarter() throws Exception {
-		MessagingModuleStarter starter = MessagingProvider.getStarter();
-		assertStarterIsMessagingModuleStarter(starter);
+		MessagingProvider.setStarter(defaultStarter);
+		assertStarterIsMessagingModuleStarter(defaultStarter);
 		makeSureErrorIsThrownAsNoImplementationsExistInThisModule();
 	}
 
@@ -141,6 +151,17 @@ public class MessagingProviderTest {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
 		MessagingProvider.getTopicMessageSender(routingInfo);
+
+		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
+		assertTrue(iterable instanceof ServiceLoader);
+
+	}
+
+	@Test
+	public void testCallEmptyTopicListener() throws Exception {
+		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
+
+		MessagingProvider.getTopicMessageListener(null);
 
 		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
 		assertTrue(iterable instanceof ServiceLoader);

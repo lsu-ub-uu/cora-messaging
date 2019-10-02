@@ -26,11 +26,11 @@ package se.uu.ub.cora.messaging;
 
 public class MessageRoutingInfo {
 
-	public String hostname;
-	public String port;
-	public String virtualHost;
-	public String routingKey;
-	public String exchange;
+	public final String hostname;
+	public final String port;
+	public final String virtualHost;
+	public final String routingKey;
+	public final String exchange;
 
 	public MessageRoutingInfo(String hostname, String port, String virtualHost, String exchange,
 			String routingKey) {

@@ -41,7 +41,7 @@ import se.uu.ub.cora.messaging.starter.MessagingModuleStarterSpy;
 public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;
 	private String testedClassName = "MessagingProvider";
-	private MessageRoutingInfo routingInfo;
+	private MessageRoutingInfo messagingRoutingInfo;
 	private MessagingModuleStarter defaultStarter;
 
 	@BeforeTest
@@ -58,8 +58,8 @@ public class MessagingProviderTest {
 		loggerFactorySpy.resetLogs(testedClassName);
 		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		MessagingProvider.setMessagingFactory(null);
-		routingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672", "alvin", "index",
-				"alvin.updates.#");
+		messagingRoutingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672", "alvin",
+				"index", "alvin.updates.#");
 	}
 
 	@Test
@@ -84,9 +84,9 @@ public class MessagingProviderTest {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
-		MessageSender messageSender = MessagingProvider.getTopicMessageSender(routingInfo);
+		MessageSender messageSender = MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
 
-		assertEquals(messagingFactorySpy.routingInfo, routingInfo);
+		assertEquals(messagingFactorySpy.messagingRoutingInfo, messagingRoutingInfo);
 		assertEquals(messageSender, messagingFactorySpy.messageSender);
 	}
 
@@ -97,10 +97,10 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testNonExceptionThrowingStartup() throws Exception {
+	public void testNonExceptionThrowingStartupForTopicMessageSender() throws Exception {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(routingInfo);
+		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
 		assertTrue(starter.startWasCalled);
 	}
 
@@ -111,10 +111,10 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testLoggingRecordStorageStartedByOtherProvider() {
+	public void testLoggingRecordStorageStartedByOtherProviderForTopicMessageSender() {
 		startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(routingInfo);
+		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
 
 		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 0),
 				"MessagingProvider starting...");
@@ -137,7 +137,7 @@ public class MessagingProviderTest {
 		Exception caughtException = null;
 		try {
 
-			MessagingProvider.getTopicMessageSender(routingInfo);
+			MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
 		} catch (Exception e) {
 			caughtException = e;
 		}
@@ -150,7 +150,7 @@ public class MessagingProviderTest {
 
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(routingInfo);
+		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
 
 		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
 		assertTrue(iterable instanceof ServiceLoader);
@@ -167,4 +167,42 @@ public class MessagingProviderTest {
 		assertTrue(iterable instanceof ServiceLoader);
 
 	}
+
+	@Test
+	public void testReturnObjectForTopicMessageListnerIsMessageListener() throws Exception {
+		assertTrue(MessagingProvider.getTopicMessageListener(null) instanceof MessageListener);
+	}
+
+	@Test
+	public void tesTopicMessageListenerUsesRoutingInfo() throws Exception {
+		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
+		MessagingProvider.setMessagingFactory(messagingFactorySpy);
+
+		MessageListener messageListener = MessagingProvider
+				.getTopicMessageListener(messagingRoutingInfo);
+
+		assertEquals(messagingFactorySpy.messagingRoutingInfo, messagingRoutingInfo);
+		assertEquals(messageListener, messagingFactorySpy.messageListener);
+	}
+
+	@Test
+	public void testNonExceptionThrowingStartupForTopicMessageListener() throws Exception {
+		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
+
+		MessagingProvider.getTopicMessageListener(messagingRoutingInfo);
+		assertTrue(starter.startWasCalled);
+	}
+
+	@Test
+	public void testLoggingRecordStorageStartedByOtherProviderForTopicMessageListener() {
+		startAndSetMessagingModuleStarterSpy();
+
+		MessagingProvider.getTopicMessageListener(messagingRoutingInfo);
+
+		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 0),
+				"MessagingProvider starting...");
+		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 1),
+				"MessagingProvider started");
+	}
+
 }

@@ -34,6 +34,8 @@ public interface MessagingFactory {
 	 *            {@link MessageRoutingInfo}
 	 * @return {@link MessageSender}
 	 */
-	MessageSender factorTopicMessageSender(MessageRoutingInfo routingInfo);
+	MessageSender factorTopicMessageSender(MessageRoutingInfo messagingRoutingInfo);
+
+	MessageListener factorTopicMessageListener(MessageRoutingInfo messagingRoutingInfo);
 
 }

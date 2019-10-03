@@ -92,8 +92,8 @@ public class MessagingProvider {
 		return starter;
 	}
 
-	public static void getTopicMessageListener(MessageRoutingInfo messagingRoutingInfo) {
-		// TODO Auto-generated method stub
+	public static MessageListener getTopicMessageListener(MessageRoutingInfo messagingRoutingInfo) {
 		ensureMessagingFactoryIsSet();
+		return messagingFactory.factorTopicMessageListener(messagingRoutingInfo);
 	}
 }

@@ -21,4 +21,6 @@ package se.uu.ub.cora.messaging;
 
 public interface MessageListener {
 
+	void listen(MessageReceiver messageReceiver);
+
 }

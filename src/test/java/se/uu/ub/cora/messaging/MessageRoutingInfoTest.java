@@ -25,20 +25,53 @@ import org.testng.annotations.Test;
 public class MessageRoutingInfoTest {
 
 	@Test
-	public void testCompleteMessageRoutingInfo() {
+	public void testInitParentMessageRoutingInfo() {
 		String hostname = "messaging.alvin-portal.org";
 		String port = "5672";
-		String virtualHost = "alvin";
-		String exchange = "index";
 		String routingKey = "alvin.updates.#";
-		MessageRoutingInfo routingInfo = new MessageRoutingInfo(hostname, port, virtualHost, exchange,
-				routingKey);
+
+		MessageRoutingInfo routingInfo = new MessageRoutingInfo(hostname, port, routingKey);
+
 		assertEquals(routingInfo.hostname, hostname);
 		assertEquals(routingInfo.port, port);
+		assertEquals(routingInfo.routingKey, routingKey);
+	}
+
+	@Test
+	public void testInitJMSMessageRoutingInfo() throws Exception {
+		String hostname = "messaging.alvin-portal.org";
+		String port = "5672";
+		String routingKey = "alvin.updates.#";
+		String username = "";
+		String password = "";
+
+		JmsMessageRoutingInfo routingInfo = new JmsMessageRoutingInfo(hostname, port, routingKey,
+				username, password);
+
+		assertEquals(routingInfo.hostname, hostname);
+		assertEquals(routingInfo.port, port);
+		assertEquals(routingInfo.routingKey, routingKey);
+		assertEquals(routingInfo.username, username);
+		assertEquals(routingInfo.password, password);
+	}
+
+	@Test
+	public void testInitAMQPMessageRoutingInfo() throws Exception {
+		// TODO test for AMQP
+		String hostname = "messaging.alvin-portal.org";
+		String port = "5672";
+		String routingKey = "alvin.updates.#";
+		String virtualHost = "alvin";
+		String exchange = "index";
+
+		AmqpMessageRoutingInfo routingInfo = new AmqpMessageRoutingInfo(hostname, port, routingKey,
+				virtualHost, exchange);
+
+		assertEquals(routingInfo.hostname, hostname);
+		assertEquals(routingInfo.port, port);
+		assertEquals(routingInfo.routingKey, routingKey);
 		assertEquals(routingInfo.virtualHost, virtualHost);
 		assertEquals(routingInfo.exchange, exchange);
-		assertEquals(routingInfo.routingKey, routingKey);
-
 	}
 
 }

@@ -17,7 +17,12 @@
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.uu.ub.cora.messaging;
+package se.uu.ub.cora.messaging.spy;
+
+import se.uu.ub.cora.messaging.MessageListener;
+import se.uu.ub.cora.messaging.MessageRoutingInfo;
+import se.uu.ub.cora.messaging.MessageSender;
+import se.uu.ub.cora.messaging.MessagingFactory;
 
 public class MessagingFactorySpy implements MessagingFactory {
 

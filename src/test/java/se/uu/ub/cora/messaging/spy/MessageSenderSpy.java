@@ -17,9 +17,11 @@
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.uu.ub.cora.messaging;
+package se.uu.ub.cora.messaging.spy;
 
 import java.util.Map;
+
+import se.uu.ub.cora.messaging.MessageSender;
 
 public class MessageSenderSpy implements MessageSender {
 

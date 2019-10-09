@@ -20,7 +20,8 @@
 package se.uu.ub.cora.messaging;
 
 /**
- * Container with information of where to route messages.
+ * Parent Container with information of where to route messages. This container holds only the
+ * parameters which are shared on the diferent MessageRoutingInfo Subclasses.
  *
  */
 
@@ -28,16 +29,14 @@ public class MessageRoutingInfo {
 
 	public final String hostname;
 	public final String port;
-	public final String virtualHost;
 	public final String routingKey;
-	public final String exchange;
 
-	public MessageRoutingInfo(String hostname, String port, String virtualHost, String exchange,
-			String routingKey) {
+	public MessageRoutingInfo(String hostname, String port, String routingKey) {
+
 		this.hostname = hostname;
 		this.port = port;
-		this.virtualHost = virtualHost;
-		this.exchange = exchange;
+		// this.virtualHost = virtualHost;
+		// this.exchange = exchange;
 		this.routingKey = routingKey;
 	}
 

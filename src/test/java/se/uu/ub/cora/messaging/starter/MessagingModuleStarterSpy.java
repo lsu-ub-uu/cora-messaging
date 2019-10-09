@@ -19,7 +19,7 @@
 package se.uu.ub.cora.messaging.starter;
 
 import se.uu.ub.cora.messaging.MessagingFactory;
-import se.uu.ub.cora.messaging.MessagingFactorySpy;
+import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
 import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
 
 public class MessagingModuleStarterSpy implements MessagingModuleStarter {

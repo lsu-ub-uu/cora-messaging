@@ -17,7 +17,7 @@
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.uu.ub.cora.messaging.log;
+package se.uu.ub.cora.messaging.spy.log;
 
 import java.util.HashMap;
 import java.util.List;

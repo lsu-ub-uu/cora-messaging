@@ -33,7 +33,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.uu.ub.cora.logger.LoggerProvider;
-import se.uu.ub.cora.messaging.log.LoggerFactorySpy;
+import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
+import se.uu.ub.cora.messaging.spy.log.LoggerFactorySpy;
 import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
 import se.uu.ub.cora.messaging.starter.MessagingModuleStarterImp;
 import se.uu.ub.cora.messaging.starter.MessagingModuleStarterSpy;
@@ -58,8 +59,8 @@ public class MessagingProviderTest {
 		loggerFactorySpy.resetLogs(testedClassName);
 		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		MessagingProvider.setMessagingFactory(null);
-		messagingRoutingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672", "alvin",
-				"index", "alvin.updates.#");
+		messagingRoutingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672",
+				"alvin");
 	}
 
 	@Test
@@ -174,7 +175,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void tesTopicMessageListenerUsesRoutingInfo() throws Exception {
+	public void testTopicMessageListenerUsesRoutingInfo() throws Exception {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
@@ -203,6 +204,63 @@ public class MessagingProviderTest {
 				"MessagingProvider starting...");
 		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 1),
 				"MessagingProvider started");
+	}
+
+	@Test
+	public void testTopicMessageListenerUsesJmsRoutingInfo() throws Exception {
+
+		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
+		MessagingProvider.setMessagingFactory(messagingFactorySpy);
+
+		String hostname = "tcp://dev-diva-drafts";
+		String port = "61617";
+		String routingKey = "fedora.apim.*";
+		String username = "admin";
+		String password = "admin";
+
+		JmsMessageRoutingInfo jmsRoutingInfo = new JmsMessageRoutingInfo(hostname, port, routingKey,
+				username, password);
+
+		MessagingProvider.getTopicMessageListener(jmsRoutingInfo);
+
+		assertTrue(messagingFactorySpy.messagingRoutingInfo instanceof JmsMessageRoutingInfo);
+
+		JmsMessageRoutingInfo storedJmsRoutingInfo = (JmsMessageRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
+
+		assertEquals(storedJmsRoutingInfo.hostname, jmsRoutingInfo.hostname);
+		assertEquals(storedJmsRoutingInfo.port, jmsRoutingInfo.port);
+		assertEquals(storedJmsRoutingInfo.routingKey, jmsRoutingInfo.routingKey);
+		assertEquals(storedJmsRoutingInfo.username, jmsRoutingInfo.username);
+		assertEquals(storedJmsRoutingInfo.password, jmsRoutingInfo.password);
+
+	}
+
+	@Test
+	public void testTopicMessageListenerUsesAmqpRoutingInfo() throws Exception {
+
+		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
+		MessagingProvider.setMessagingFactory(messagingFactorySpy);
+
+		String hostname = "tcp://dev-diva-drafts";
+		String port = "61617";
+		String routingKey = "fedora.apim.*";
+		String virtualHost = "alvin";
+		String exchange = "index";
+
+		AmqpMessageRoutingInfo amqpRoutingInfo = new AmqpMessageRoutingInfo(hostname, port,
+				routingKey, virtualHost, exchange);
+
+		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
+
+		assertTrue(messagingFactorySpy.messagingRoutingInfo instanceof AmqpMessageRoutingInfo);
+
+		AmqpMessageRoutingInfo storedJmsRoutingInfo = (AmqpMessageRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
+
+		assertEquals(storedJmsRoutingInfo.hostname, amqpRoutingInfo.hostname);
+		assertEquals(storedJmsRoutingInfo.port, amqpRoutingInfo.port);
+		assertEquals(storedJmsRoutingInfo.routingKey, amqpRoutingInfo.routingKey);
+		assertEquals(storedJmsRoutingInfo.virtualHost, amqpRoutingInfo.virtualHost);
+		assertEquals(storedJmsRoutingInfo.exchange, amqpRoutingInfo.exchange);
 	}
 
 }

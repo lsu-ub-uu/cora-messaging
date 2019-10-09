@@ -1,4 +1,7 @@
-package se.uu.ub.cora.messaging;
+package se.uu.ub.cora.messaging.spy;
+
+import se.uu.ub.cora.messaging.MessageListener;
+import se.uu.ub.cora.messaging.MessageReceiver;
 
 public class MessageListenerSpy implements MessageListener {
 

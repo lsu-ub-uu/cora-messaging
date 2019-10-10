@@ -64,8 +64,8 @@ public class MessageRoutingInfoTest {
 		String virtualHost = "alvin";
 		String exchange = "index";
 
-		AmqpMessageRoutingInfo routingInfo = new AmqpMessageRoutingInfo(hostname, port, routingKey,
-				virtualHost, exchange);
+		AmqpMessageRoutingInfo routingInfo = new AmqpMessageRoutingInfo(hostname, port, virtualHost,
+				exchange, routingKey);
 
 		assertEquals(routingInfo.hostname, hostname);
 		assertEquals(routingInfo.port, port);

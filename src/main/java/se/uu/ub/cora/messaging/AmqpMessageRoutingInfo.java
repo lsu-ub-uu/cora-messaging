@@ -23,8 +23,8 @@ public class AmqpMessageRoutingInfo extends MessageRoutingInfo {
 	public final String virtualHost;
 	public final String exchange;
 
-	public AmqpMessageRoutingInfo(String hostname, String port, String routingKey,
-			String virtualHost, String exchange) {
+	public AmqpMessageRoutingInfo(String hostname, String port, String virtualHost,
+			String exchange, String routingKey) {
 		super(hostname, port, routingKey);
 		this.virtualHost = virtualHost;
 		this.exchange = exchange;

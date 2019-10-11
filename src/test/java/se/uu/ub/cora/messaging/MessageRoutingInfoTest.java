@@ -42,8 +42,8 @@ public class MessageRoutingInfoTest {
 		String hostname = "messaging.alvin-portal.org";
 		String port = "5672";
 		String routingKey = "alvin.updates.#";
-		String username = "";
-		String password = "";
+		String username = "admin";
+		String password = "admin";
 
 		JmsMessageRoutingInfo routingInfo = new JmsMessageRoutingInfo(hostname, port, routingKey,
 				username, password);

@@ -91,4 +91,9 @@ public class MessagingProvider {
 	static MessagingModuleStarter getStarter() {
 		return starter;
 	}
+
+	public static MessageListener getTopicMessageListener(MessageRoutingInfo messagingRoutingInfo) {
+		ensureMessagingFactoryIsSet();
+		return messagingFactory.factorTopicMessageListener(messagingRoutingInfo);
+	}
 }

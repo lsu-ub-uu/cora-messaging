@@ -16,23 +16,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.uu.ub.cora.messaging.starter;
 
-import se.uu.ub.cora.messaging.MessagingFactory;
-import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
-import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
+package se.uu.ub.cora.messaging.spy;
 
-public class MessagingModuleStarterSpy implements MessagingModuleStarter {
+import java.util.Map;
 
-	public boolean startWasCalled = false;
-	public Iterable<MessagingFactory> messagingFactoryImplementations;
+import se.uu.ub.cora.messaging.MessageSender;
+
+public class MessageSenderSpy implements MessageSender {
 
 	@Override
-	public MessagingFactory startUsingMessagingFactoryImplementations(
-			Iterable<MessagingFactory> messagingFactoryImplementations) {
-		this.messagingFactoryImplementations = messagingFactoryImplementations;
-		startWasCalled = true;
-		return new MessagingFactorySpy();
+	public void sendMessage(Map<String, Object> headers, String message) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

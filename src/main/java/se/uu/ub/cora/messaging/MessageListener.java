@@ -19,18 +19,8 @@
 
 package se.uu.ub.cora.messaging;
 
-public class MessagingFactorySpy implements MessagingFactory {
+public interface MessageListener {
 
-	public MessageRoutingInfo routingInfo;
-	public MessageSender messageSender;
-
-	@Override
-	public MessageSender factorTopicMessageSender(MessageRoutingInfo routingInfo) {
-
-		this.routingInfo = routingInfo;
-		this.messageSender = new MessageSenderSpy();
-
-		return messageSender;
-	}
+	void listen(MessageReceiver messageReceiver);
 
 }

@@ -16,17 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.uu.ub.cora.messaging;
 
-import java.util.Map;
+public class JmsMessageRoutingInfo extends MessageRoutingInfo {
 
-public class MessageSenderSpy implements MessageSender {
+	public final String username;
+	public final String password;
 
-	@Override
-	public void sendMessage(Map<String, Object> headers, String message) {
-		// TODO Auto-generated method stub
-
+	public JmsMessageRoutingInfo(String hostname, String port, String routingKey, String username,
+			String password) {
+		super(hostname, port, routingKey);
+		this.username = username;
+		this.password = password;
 	}
-
 }

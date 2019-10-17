@@ -16,23 +16,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.uu.ub.cora.messaging.starter;
+package se.uu.ub.cora.messaging;
 
-import se.uu.ub.cora.messaging.MessagingFactory;
-import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
-import se.uu.ub.cora.messaging.starter.MessagingModuleStarter;
+public class AmqpMessageRoutingInfo extends MessageRoutingInfo {
 
-public class MessagingModuleStarterSpy implements MessagingModuleStarter {
+	public final String virtualHost;
+	public final String exchange;
 
-	public boolean startWasCalled = false;
-	public Iterable<MessagingFactory> messagingFactoryImplementations;
-
-	@Override
-	public MessagingFactory startUsingMessagingFactoryImplementations(
-			Iterable<MessagingFactory> messagingFactoryImplementations) {
-		this.messagingFactoryImplementations = messagingFactoryImplementations;
-		startWasCalled = true;
-		return new MessagingFactorySpy();
+	public AmqpMessageRoutingInfo(String hostname, String port, String virtualHost,
+			String exchange, String routingKey) {
+		super(hostname, port, routingKey);
+		this.virtualHost = virtualHost;
+		this.exchange = exchange;
 	}
 
 }

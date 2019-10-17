@@ -29,9 +29,9 @@ import org.testng.annotations.Test;
 
 import se.uu.ub.cora.logger.LoggerProvider;
 import se.uu.ub.cora.messaging.MessagingFactory;
-import se.uu.ub.cora.messaging.MessagingFactorySpy;
 import se.uu.ub.cora.messaging.MessagingInitializationException;
-import se.uu.ub.cora.messaging.log.LoggerFactorySpy;
+import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
+import se.uu.ub.cora.messaging.spy.log.LoggerFactorySpy;
 import se.uu.ub.cora.messaging.starter.MessagingModuleStarterImp;
 
 public class MessagingStarterTest {

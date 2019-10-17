@@ -248,7 +248,7 @@ public class MessagingProviderTest {
 		String exchange = "index";
 
 		AmqpMessageRoutingInfo amqpRoutingInfo = new AmqpMessageRoutingInfo(hostname, port,
-				routingKey, virtualHost, exchange);
+				virtualHost, exchange, routingKey);
 
 		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
 

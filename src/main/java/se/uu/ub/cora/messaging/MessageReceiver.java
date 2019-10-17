@@ -22,7 +22,7 @@ import java.util.Map;
 
 public interface MessageReceiver {
 
-	void receiveMessage(Map<String, Object> headers, String message);
+	void receiveMessage(Map<String, String> headers, String message);
 
 	void topicClosed();
 

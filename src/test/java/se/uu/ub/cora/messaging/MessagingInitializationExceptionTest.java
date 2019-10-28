@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Olov McKie
+ * Copyright 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -25,9 +25,19 @@ import org.testng.annotations.Test;
 public class MessagingInitializationExceptionTest {
 	@Test
 	public void testInit() {
-		MessagingInitializationException notAuthenticated = new MessagingInitializationException(
+		MessagingInitializationException initializationException = new MessagingInitializationException(
 				"message");
 
-		assertEquals(notAuthenticated.getMessage(), "message");
+		assertEquals(initializationException.getMessage(), "message");
+	}
+
+	@Test
+	public void testInitwithException() {
+		Exception exception = new Exception();
+		MessagingInitializationException initializationException = new MessagingInitializationException(
+				"message", exception);
+
+		assertEquals(initializationException.getMessage(), "message");
+		assertEquals(initializationException.getCause(), exception);
 	}
 }

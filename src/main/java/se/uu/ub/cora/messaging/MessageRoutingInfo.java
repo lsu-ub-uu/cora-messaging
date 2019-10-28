@@ -35,8 +35,6 @@ public class MessageRoutingInfo {
 
 		this.hostname = hostname;
 		this.port = port;
-		// this.virtualHost = virtualHost;
-		// this.exchange = exchange;
 		this.routingKey = routingKey;
 	}
 

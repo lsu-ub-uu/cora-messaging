@@ -93,7 +93,8 @@ public class MessagingProviderTest {
 
 	@Test
 	public void testStartingOfProviderFactoryCanOnlyBeDoneByOneThreadAtATime() throws Exception {
-		Method declaredMethod = LoggerProvider.class.getDeclaredMethod("ensureLoggerFactoryIsSet");
+		Method declaredMethod = MessagingProvider.class
+				.getDeclaredMethod("ensureMessagingFactoryIsSet");
 		assertTrue(Modifier.isSynchronized(declaredMethod.getModifiers()));
 	}
 

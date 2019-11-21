@@ -56,7 +56,7 @@ public class MessagingProvider {
 		return messagingFactory.factorTopicMessageSender(messagingRoutingInfo);
 	}
 
-	private static void ensureMessagingFactoryIsSet() {
+	private static synchronized void ensureMessagingFactoryIsSet() {
 		if (null == messagingFactory) {
 			log.logInfoUsingMessage("MessagingProvider starting...");
 			getMessagingFactoryImpUsingModuleStarter();

@@ -32,7 +32,6 @@ import se.uu.ub.cora.messaging.MessagingFactory;
 import se.uu.ub.cora.messaging.MessagingInitializationException;
 import se.uu.ub.cora.messaging.spy.MessagingFactorySpy;
 import se.uu.ub.cora.messaging.spy.log.LoggerFactorySpy;
-import se.uu.ub.cora.messaging.starter.MessagingModuleStarterImp;
 
 public class MessagingStarterTest {
 	private LoggerFactorySpy loggerFactorySpy;

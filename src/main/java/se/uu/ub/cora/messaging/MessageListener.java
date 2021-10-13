@@ -19,8 +19,15 @@
 
 package se.uu.ub.cora.messaging;
 
+/**
+ * 
+ *
+ */
 public interface MessageListener {
-
+	/**
+	 * 
+	 * @param messageReceiver
+	 */
 	void listen(MessageReceiver messageReceiver);
 
 }

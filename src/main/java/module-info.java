@@ -1,3 +1,6 @@
+/**
+ * The messaging module provides interfaces and classes to interact with a JMS messaging system.
+ */
 module se.uu.ub.cora.messaging {
 	requires transitive se.uu.ub.cora.logger;
 

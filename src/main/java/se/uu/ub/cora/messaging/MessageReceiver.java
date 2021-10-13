@@ -20,10 +20,32 @@ package se.uu.ub.cora.messaging;
 
 import java.util.Map;
 
+/**
+ * MessageReceiver handles incoming messages from a {@link MessageListener}.
+ * <p>
+ * Implementations of MessageReciever MUST be threadsafe.
+ */
 public interface MessageReceiver {
-
+	/**
+	 * receiveMessage gets a call for each message recieved by the {@link MessageListener} it is
+	 * connected to.
+	 * <p>
+	 * Implementing classes use this method to handle incoming messages.
+	 * 
+	 * <p>
+	 * <em>Note, that multiple calls can be made simultaniously to this method</em>
+	 * 
+	 * @param headers
+	 *            Map with the JMS message headers.
+	 * @param message
+	 *            String with the JMS message body.
+	 */
 	void receiveMessage(Map<String, String> headers, String message);
 
+	/**
+	 * topicClosed might be called by implementing messaging systems when a connection to the
+	 * specified message queue is closed
+	 */
 	void topicClosed();
 
 }

@@ -248,14 +248,14 @@ public class MessagingProviderTest {
 		String virtualHost = "alvin";
 		String exchange = "index";
 
-		AmqpMessageRoutingInfo amqpRoutingInfo = new AmqpMessageRoutingInfo(hostname, port,
+		AmqpMessageListenerRoutingInfo amqpRoutingInfo = new AmqpMessageListenerRoutingInfo(hostname, port,
 				virtualHost, exchange, routingKey);
 
 		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
 
-		assertTrue(messagingFactorySpy.messagingRoutingInfo instanceof AmqpMessageRoutingInfo);
+		assertTrue(messagingFactorySpy.messagingRoutingInfo instanceof AmqpMessageListenerRoutingInfo);
 
-		AmqpMessageRoutingInfo storedJmsRoutingInfo = (AmqpMessageRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
+		AmqpMessageListenerRoutingInfo storedJmsRoutingInfo = (AmqpMessageListenerRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
 
 		assertEquals(storedJmsRoutingInfo.hostname, amqpRoutingInfo.hostname);
 		assertEquals(storedJmsRoutingInfo.port, amqpRoutingInfo.port);

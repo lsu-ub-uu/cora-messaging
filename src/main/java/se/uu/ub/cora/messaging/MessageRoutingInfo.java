@@ -28,10 +28,10 @@ package se.uu.ub.cora.messaging;
 public class MessageRoutingInfo {
 
 	public final String hostname;
-	public final String port;
+	public final int port;
 	public final String routingKey;
 
-	public MessageRoutingInfo(String hostname, String port, String routingKey) {
+	public MessageRoutingInfo(String hostname, int port, String routingKey) {
 
 		this.hostname = hostname;
 		this.port = port;

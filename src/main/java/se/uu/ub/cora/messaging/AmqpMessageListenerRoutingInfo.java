@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Uppsala University Library
+ * Copyright 2023 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -18,16 +18,16 @@
  */
 package se.uu.ub.cora.messaging;
 
-public class AmqpMessageRoutingInfoSender extends MessageRoutingInfo {
+public class AmqpMessageListenerRoutingInfo extends MessageRoutingInfo {
 
 	public final String virtualHost;
-	public final String exchange;
+	public final String queueName;
 
-	public AmqpMessageRoutingInfoSender(String hostname, String port, String virtualHost,
-			String exchange, String routingKey) {
-		super(hostname, port, routingKey);
+	public AmqpMessageListenerRoutingInfo(String hostname, int somePort, String virtualHost,
+			String queueName) {
+		super(hostname, somePort, "");
 		this.virtualHost = virtualHost;
-		this.exchange = exchange;
+		this.queueName = queueName;
 	}
 
 }

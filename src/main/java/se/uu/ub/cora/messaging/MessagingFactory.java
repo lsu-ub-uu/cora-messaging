@@ -36,6 +36,6 @@ public interface MessagingFactory {
 	 */
 	MessageSender factorTopicMessageSender(MessageRoutingInfo messagingRoutingInfo);
 
-	MessageListener factorTopicMessageListener(MessageRoutingInfo messagingRoutingInfo);
+	MessageListener factorTopicMessageListener(AmqpMessageListenerRoutingInfo messagingRoutingInfo);
 
 }

@@ -18,12 +18,12 @@
  */
 package se.uu.ub.cora.messaging;
 
-public class AmqpMessageRoutingInfo extends MessageRoutingInfo {
+public class AmqpMessageSenderRoutingInfo extends MessageRoutingInfo {
 
 	public final String virtualHost;
 	public final String exchange;
 
-	public AmqpMessageRoutingInfo(String hostname, String port, String virtualHost,
+	public AmqpMessageSenderRoutingInfo(String hostname, int port, String virtualHost,
 			String exchange, String routingKey) {
 		super(hostname, port, routingKey);
 		this.virtualHost = virtualHost;

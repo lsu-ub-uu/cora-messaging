@@ -42,8 +42,8 @@ import se.uu.ub.cora.messaging.starter.MessagingModuleStarterSpy;
 public class MessagingProviderTest {
 	private LoggerFactorySpy loggerFactorySpy;
 	private String testedClassName = "MessagingProvider";
-	private MessageRoutingInfo messagingRoutingInfo;
 	private MessagingModuleStarter defaultStarter;
+	private AmqpMessageListenerRoutingInfo amqpRoutingInfo;
 
 	@BeforeTest
 	public void beforeTest() {
@@ -59,8 +59,9 @@ public class MessagingProviderTest {
 		loggerFactorySpy.resetLogs(testedClassName);
 		LoggerProvider.setLoggerFactory(loggerFactorySpy);
 		MessagingProvider.setMessagingFactory(null);
-		messagingRoutingInfo = new MessageRoutingInfo("messaging.alvin-portal.org", "5672",
-				"alvin");
+
+		amqpRoutingInfo = new AmqpMessageListenerRoutingInfo("tcp://dev-diva-drafts", 61617,
+				"alvin", "someQueue");
 	}
 
 	@Test
@@ -85,9 +86,9 @@ public class MessagingProviderTest {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
-		MessageSender messageSender = MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
+		MessageSender messageSender = MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
 
-		assertEquals(messagingFactorySpy.messagingRoutingInfo, messagingRoutingInfo);
+		assertEquals(messagingFactorySpy.messagingRoutingInfo, amqpRoutingInfo);
 		assertEquals(messageSender, messagingFactorySpy.messageSender);
 	}
 
@@ -102,7 +103,7 @@ public class MessagingProviderTest {
 	public void testNonExceptionThrowingStartupForTopicMessageSender() throws Exception {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
+		MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
 		assertTrue(starter.startWasCalled);
 	}
 
@@ -116,7 +117,7 @@ public class MessagingProviderTest {
 	public void testLoggingRecordStorageStartedByOtherProviderForTopicMessageSender() {
 		startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
+		MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
 
 		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 0),
 				"MessagingProvider starting...");
@@ -139,7 +140,7 @@ public class MessagingProviderTest {
 		Exception caughtException = null;
 		try {
 
-			MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
+			MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
 		} catch (Exception e) {
 			caughtException = e;
 		}
@@ -152,7 +153,7 @@ public class MessagingProviderTest {
 
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageSender(messagingRoutingInfo);
+		MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
 
 		Iterable<MessagingFactory> iterable = starter.messagingFactoryImplementations;
 		assertTrue(iterable instanceof ServiceLoader);
@@ -181,9 +182,9 @@ public class MessagingProviderTest {
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
 		MessageListener messageListener = MessagingProvider
-				.getTopicMessageListener(messagingRoutingInfo);
+				.getTopicMessageListener(amqpRoutingInfo);
 
-		assertEquals(messagingFactorySpy.messagingRoutingInfo, messagingRoutingInfo);
+		assertEquals(messagingFactorySpy.messagingRoutingInfo, amqpRoutingInfo);
 		assertEquals(messageListener, messagingFactorySpy.messageListener);
 	}
 
@@ -191,7 +192,7 @@ public class MessagingProviderTest {
 	public void testNonExceptionThrowingStartupForTopicMessageListener() throws Exception {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageListener(messagingRoutingInfo);
+		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
 		assertTrue(starter.startWasCalled);
 	}
 
@@ -199,7 +200,7 @@ public class MessagingProviderTest {
 	public void testLoggingRecordStorageStartedByOtherProviderForTopicMessageListener() {
 		startAndSetMessagingModuleStarterSpy();
 
-		MessagingProvider.getTopicMessageListener(messagingRoutingInfo);
+		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
 
 		assertEquals(loggerFactorySpy.getInfoLogMessageUsingClassNameAndNo(testedClassName, 0),
 				"MessagingProvider starting...");
@@ -214,7 +215,7 @@ public class MessagingProviderTest {
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
 		String hostname = "tcp://dev-diva-drafts";
-		String port = "61617";
+		int port = 61617;
 		String routingKey = "fedora.apim.*";
 		String username = "admin";
 		String password = "admin";
@@ -242,26 +243,17 @@ public class MessagingProviderTest {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
-		String hostname = "tcp://dev-diva-drafts";
-		String port = "61617";
-		String routingKey = "fedora.apim.*";
-		String virtualHost = "alvin";
-		String exchange = "index";
-
-		AmqpMessageListenerRoutingInfo amqpRoutingInfo = new AmqpMessageListenerRoutingInfo(hostname, port,
-				virtualHost, exchange, routingKey);
-
 		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
 
-		assertTrue(messagingFactorySpy.messagingRoutingInfo instanceof AmqpMessageListenerRoutingInfo);
+		assertTrue(
+				messagingFactorySpy.messagingRoutingInfo instanceof AmqpMessageListenerRoutingInfo);
 
-		AmqpMessageListenerRoutingInfo storedJmsRoutingInfo = (AmqpMessageListenerRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
+		AmqpMessageListenerRoutingInfo storedRoutingInfo = (AmqpMessageListenerRoutingInfo) messagingFactorySpy.messagingRoutingInfo;
 
-		assertEquals(storedJmsRoutingInfo.hostname, amqpRoutingInfo.hostname);
-		assertEquals(storedJmsRoutingInfo.port, amqpRoutingInfo.port);
-		assertEquals(storedJmsRoutingInfo.routingKey, amqpRoutingInfo.routingKey);
-		assertEquals(storedJmsRoutingInfo.virtualHost, amqpRoutingInfo.virtualHost);
-		assertEquals(storedJmsRoutingInfo.exchange, amqpRoutingInfo.exchange);
+		assertEquals(storedRoutingInfo.hostname, amqpRoutingInfo.hostname);
+		assertEquals(storedRoutingInfo.port, amqpRoutingInfo.port);
+		assertEquals(storedRoutingInfo.virtualHost, amqpRoutingInfo.virtualHost);
+		assertEquals(storedRoutingInfo.queueName, amqpRoutingInfo.queueName);
 	}
 
 }

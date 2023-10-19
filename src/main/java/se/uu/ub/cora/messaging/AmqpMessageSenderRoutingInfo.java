@@ -22,10 +22,12 @@ public class AmqpMessageSenderRoutingInfo extends MessageRoutingInfo {
 
 	public final String virtualHost;
 	public final String exchange;
+	public final String routingKey;
 
 	public AmqpMessageSenderRoutingInfo(String hostname, int port, String virtualHost,
 			String exchange, String routingKey) {
-		super(hostname, port, routingKey);
+		super(hostname, port);
+		this.routingKey = routingKey;
 		this.virtualHost = virtualHost;
 		this.exchange = exchange;
 	}

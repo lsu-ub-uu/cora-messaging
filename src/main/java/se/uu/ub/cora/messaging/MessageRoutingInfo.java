@@ -25,17 +25,15 @@ package se.uu.ub.cora.messaging;
  *
  */
 
-public class MessageRoutingInfo {
+public abstract class MessageRoutingInfo {
 
 	public final String hostname;
 	public final int port;
-	public final String routingKey;
 
-	public MessageRoutingInfo(String hostname, int port, String routingKey) {
+	public MessageRoutingInfo(String hostname, int port) {
 
 		this.hostname = hostname;
 		this.port = port;
-		this.routingKey = routingKey;
 	}
 
 }

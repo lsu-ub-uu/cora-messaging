@@ -25,7 +25,7 @@ public class AmqpMessageListenerRoutingInfo extends MessageRoutingInfo {
 
 	public AmqpMessageListenerRoutingInfo(String hostname, int somePort, String virtualHost,
 			String queueName) {
-		super(hostname, somePort, "");
+		super(hostname, somePort);
 		this.virtualHost = virtualHost;
 		this.queueName = queueName;
 	}

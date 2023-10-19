@@ -24,54 +24,53 @@ import org.testng.annotations.Test;
 
 public class MessageRoutingInfoTest {
 
-	@Test
-	public void testInitParentMessageRoutingInfo() {
-		String hostname = "messaging.alvin-portal.org";
-		String port = "5672";
-		String routingKey = "alvin.updates.#";
-
-		MessageRoutingInfo routingInfo = new MessageRoutingInfo(hostname, port, routingKey);
-
-		assertEquals(routingInfo.hostname, hostname);
-		assertEquals(routingInfo.port, port);
-		assertEquals(routingInfo.routingKey, routingKey);
-	}
+	private static final String QUEUE_NAME = "someQueue";
+	private static final String HOSTNAME = "messaging.alvin-portal.org";
+	private static final int PORT = 5672;
+	private static final String VHOST = "alvin";
+	private static final String EXCHANGE = "index";
+	private static final String ROUTING_KEY = "alvin.updates.#";
 
 	@Test
 	public void testInitJMSMessageRoutingInfo() throws Exception {
-		String hostname = "messaging.alvin-portal.org";
-		String port = "5672";
-		String routingKey = "alvin.updates.#";
 		String username = "admin";
 		String password = "admin";
 
-		JmsMessageRoutingInfo routingInfo = new JmsMessageRoutingInfo(hostname, port, routingKey,
+		JmsMessageRoutingInfo routingInfo = new JmsMessageRoutingInfo(HOSTNAME, PORT, ROUTING_KEY,
 				username, password);
 
-		assertEquals(routingInfo.hostname, hostname);
-		assertEquals(routingInfo.port, port);
-		assertEquals(routingInfo.routingKey, routingKey);
+		assertEquals(routingInfo.hostname, HOSTNAME);
+		assertEquals(routingInfo.port, PORT);
+		assertEquals(routingInfo.routingKey, ROUTING_KEY);
 		assertEquals(routingInfo.username, username);
 		assertEquals(routingInfo.password, password);
 	}
 
 	@Test
-	public void testInitAMQPMessageRoutingInfo() throws Exception {
+	public void testInitAMQPMessageSenderRoutingInfo() throws Exception {
 		// TODO test for AMQP
-		String hostname = "messaging.alvin-portal.org";
-		String port = "5672";
-		String routingKey = "alvin.updates.#";
-		String virtualHost = "alvin";
-		String exchange = "index";
 
-		AmqpMessageRoutingInfo routingInfo = new AmqpMessageRoutingInfo(hostname, port, virtualHost,
-				exchange, routingKey);
+		AmqpMessageSenderRoutingInfo routingInfo = new AmqpMessageSenderRoutingInfo(HOSTNAME, PORT,
+				VHOST, EXCHANGE, ROUTING_KEY);
 
-		assertEquals(routingInfo.hostname, hostname);
-		assertEquals(routingInfo.port, port);
-		assertEquals(routingInfo.routingKey, routingKey);
-		assertEquals(routingInfo.virtualHost, virtualHost);
-		assertEquals(routingInfo.exchange, exchange);
+		assertEquals(routingInfo.hostname, HOSTNAME);
+		assertEquals(routingInfo.port, PORT);
+		assertEquals(routingInfo.routingKey, ROUTING_KEY);
+		assertEquals(routingInfo.virtualHost, VHOST);
+		assertEquals(routingInfo.exchange, EXCHANGE);
+	}
+
+	@Test
+	public void testInitAMQPMessageListnerRoutingInfo() throws Exception {
+		// TODO test for AMQP
+
+		AmqpMessageListenerRoutingInfo routingInfo = new AmqpMessageListenerRoutingInfo(HOSTNAME,
+				PORT, VHOST, QUEUE_NAME);
+
+		assertEquals(routingInfo.hostname, HOSTNAME);
+		assertEquals(routingInfo.port, PORT);
+		assertEquals(routingInfo.virtualHost, VHOST);
+		assertEquals(routingInfo.queueName, QUEUE_NAME);
 	}
 
 }

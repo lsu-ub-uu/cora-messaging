@@ -16,24 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.uu.ub.cora.messaging;
 
-/**
- * Parent Container with information of where to route messages. This container holds only the
- * parameters which are shared on the diferent MessageRoutingInfo Subclasses.
- *
- */
+public class AmqpMessageSenderRoutingInfo extends MessageRoutingInfo {
 
-public abstract class MessageRoutingInfo {
+	public final String virtualHost;
+	public final String exchange;
+	public final String routingKey;
 
-	public final String hostname;
-	public final int port;
-
-	public MessageRoutingInfo(String hostname, int port) {
-
-		this.hostname = hostname;
-		this.port = port;
+	public AmqpMessageSenderRoutingInfo(String hostname, int port, String virtualHost,
+			String exchange, String routingKey) {
+		super(hostname, port);
+		this.routingKey = routingKey;
+		this.virtualHost = virtualHost;
+		this.exchange = exchange;
 	}
 
 }

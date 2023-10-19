@@ -22,10 +22,12 @@ public class JmsMessageRoutingInfo extends MessageRoutingInfo {
 
 	public final String username;
 	public final String password;
+	public final String routingKey;
 
-	public JmsMessageRoutingInfo(String hostname, String port, String routingKey, String username,
+	public JmsMessageRoutingInfo(String hostname, int port, String routingKey, String username,
 			String password) {
-		super(hostname, port, routingKey);
+		super(hostname, port);
+		this.routingKey = routingKey;
 		this.username = username;
 		this.password = password;
 	}

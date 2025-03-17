@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Uppsala University Library
+ * Copyright 2019, 2025 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -32,7 +32,7 @@ public class MessageRoutingInfoTest {
 	private static final String ROUTING_KEY = "alvin.updates.#";
 
 	@Test
-	public void testInitJMSMessageRoutingInfo() throws Exception {
+	public void testInitJMSMessageRoutingInfo() {
 		String username = "admin";
 		String password = "admin";
 
@@ -47,9 +47,7 @@ public class MessageRoutingInfoTest {
 	}
 
 	@Test
-	public void testInitAMQPMessageSenderRoutingInfo() throws Exception {
-		// TODO test for AMQP
-
+	public void testInitAMQPMessageSenderRoutingInfo() {
 		AmqpMessageSenderRoutingInfo routingInfo = new AmqpMessageSenderRoutingInfo(HOSTNAME, PORT,
 				VHOST, EXCHANGE, ROUTING_KEY);
 
@@ -61,9 +59,7 @@ public class MessageRoutingInfoTest {
 	}
 
 	@Test
-	public void testInitAMQPMessageListnerRoutingInfo() throws Exception {
-		// TODO test for AMQP
-
+	public void testInitAMQPMessageListnerRoutingInfo() {
 		AmqpMessageListenerRoutingInfo routingInfo = new AmqpMessageListenerRoutingInfo(HOSTNAME,
 				PORT, VHOST, QUEUE_NAME);
 
@@ -73,4 +69,17 @@ public class MessageRoutingInfoTest {
 		assertEquals(routingInfo.queueName, QUEUE_NAME);
 	}
 
+	@Test
+	public void testInitAMQPMessageListnerRoutingInfo_AutoCreateQueue() {
+		String exchange = "someExchange";
+		String routingKey = "user";
+		AmqpMessageListenerRoutingInfo routingInfo = new AmqpMessageListenerRoutingInfo(HOSTNAME,
+				PORT, VHOST, exchange, routingKey);
+
+		assertEquals(routingInfo.hostname, HOSTNAME);
+		assertEquals(routingInfo.port, PORT);
+		assertEquals(routingInfo.virtualHost, VHOST);
+		assertEquals(routingInfo.exchange, exchange);
+		assertEquals(routingInfo.routingKey, routingKey);
+	}
 }

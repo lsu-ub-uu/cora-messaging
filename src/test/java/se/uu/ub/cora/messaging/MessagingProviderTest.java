@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Uppsala University Library
+ * Copyright 2019, 2025 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -20,6 +20,8 @@
 package se.uu.ub.cora.messaging;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Constructor;
@@ -82,7 +84,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testSetMessagingFactoryForUsingInAnotherTest() throws Exception {
+	public void testSetMessagingFactoryForUsingInAnotherTest() {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
@@ -100,7 +102,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testNonExceptionThrowingStartupForTopicMessageSender() throws Exception {
+	public void testNonExceptionThrowingStartupForTopicMessageSender() {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
 		MessagingProvider.getTopicMessageSender(amqpRoutingInfo);
@@ -126,7 +128,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testInitUsesDefaultMessagingModuleStarter() throws Exception {
+	public void testInitUsesDefaultMessagingModuleStarter() {
 		MessagingProvider.setStarter(defaultStarter);
 		assertStarterIsMessagingModuleStarter(defaultStarter);
 		makeSureErrorIsThrownAsNoImplementationsExistInThisModule();
@@ -149,7 +151,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testMessagingFactoryImplementationsArePassedOnToStarter() throws Exception {
+	public void testMessagingFactoryImplementationsArePassedOnToStarter() {
 
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
@@ -161,7 +163,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testCallEmptyTopicListener() throws Exception {
+	public void testCallEmptyTopicListener() {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
 		MessagingProvider.getTopicMessageListener(null);
@@ -172,12 +174,12 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testReturnObjectForTopicMessageListnerIsMessageListener() throws Exception {
+	public void testReturnObjectForTopicMessageListnerIsMessageListener() {
 		assertTrue(MessagingProvider.getTopicMessageListener(null) instanceof MessageListener);
 	}
 
 	@Test
-	public void testTopicMessageListenerUsesRoutingInfo() throws Exception {
+	public void testTopicMessageListenerUsesRoutingInfo() {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
@@ -189,7 +191,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testNonExceptionThrowingStartupForTopicMessageListener() throws Exception {
+	public void testNonExceptionThrowingStartupForTopicMessageListener() {
 		MessagingModuleStarterSpy starter = startAndSetMessagingModuleStarterSpy();
 
 		MessagingProvider.getTopicMessageListener(amqpRoutingInfo);
@@ -209,7 +211,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testTopicMessageListenerUsesJmsRoutingInfo() throws Exception {
+	public void testTopicMessageListenerUsesJmsRoutingInfo() {
 
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
@@ -238,8 +240,7 @@ public class MessagingProviderTest {
 	}
 
 	@Test
-	public void testTopicMessageListenerUsesAmqpRoutingInfo() throws Exception {
-
+	public void testTopicMessageListenerUsesAmqpRoutingInfo() {
 		MessagingFactorySpy messagingFactorySpy = new MessagingFactorySpy();
 		MessagingProvider.setMessagingFactory(messagingFactorySpy);
 
@@ -254,6 +255,21 @@ public class MessagingProviderTest {
 		assertEquals(storedRoutingInfo.port, amqpRoutingInfo.port);
 		assertEquals(storedRoutingInfo.virtualHost, amqpRoutingInfo.virtualHost);
 		assertEquals(storedRoutingInfo.queueName, amqpRoutingInfo.queueName);
+	}
+
+	@Test
+	public void testGetMessagingProviderUniqueId() {
+		String uniqueId = MessagingProvider.getMessagingId();
+
+		assertNotNull(uniqueId);
+	}
+
+	@Test
+	public void testGetMessagingProviderUniqueIdSameForMultipleCalls() {
+		String uniqueId = MessagingProvider.getMessagingId();
+		String uniqueId2 = MessagingProvider.getMessagingId();
+
+		assertSame(uniqueId, uniqueId2);
 	}
 
 }

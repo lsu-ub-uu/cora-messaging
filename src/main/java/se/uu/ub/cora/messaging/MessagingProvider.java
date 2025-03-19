@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Uppsala University Library
+ * Copyright 2019, 2025 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -19,6 +19,8 @@
 
 package se.uu.ub.cora.messaging;
 
+import static java.util.UUID.randomUUID;
+
 import java.util.ServiceLoader;
 
 import se.uu.ub.cora.logger.Logger;
@@ -35,6 +37,7 @@ public class MessagingProvider {
 	private static MessagingFactory messagingFactory;
 	private static MessagingModuleStarter starter = new MessagingModuleStarterImp();
 	private static Logger log = LoggerProvider.getLoggerForClass(MessagingProvider.class);
+	private static String messagingId = randomUUID().toString();
 
 	private MessagingProvider() {
 		// prevent constructor from ever being called even by reflection
@@ -95,5 +98,12 @@ public class MessagingProvider {
 	public static MessageListener getTopicMessageListener(MessageRoutingInfo messagingRoutingInfo) {
 		ensureMessagingFactoryIsSet();
 		return messagingFactory.factorTopicMessageListener(messagingRoutingInfo);
+	}
+
+	/**
+	 * Returns a MessagingId that is unique for this instance of the application.
+	 */
+	public static String getMessagingId() {
+		return messagingId;
 	}
 }
